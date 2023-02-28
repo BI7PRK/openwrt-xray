@@ -12,9 +12,17 @@ env:
   CACHE_DIR: ~/cache
   
 jobs:
+  checkout-version:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout new version
+          run: |
+           echo '${{ inputs.version_code }}'
+
   release:
     name: Build for ${{ matrix.arch }}
     runs-on: ubuntu-latest
+    needs: checkout-version
     strategy:
       fail-fast: false
       matrix:
@@ -83,10 +91,6 @@ jobs:
       CCACHE_DIR: ~/.ccache
       CONFIG_CCACHE: y
     steps:
-      - name: Create new version
-        run: |
-          echo "Release Type: ${{ inputs.version_code }}"
-
       - name: Checkout
         uses: actions/checkout@v3
 
