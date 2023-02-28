@@ -30,7 +30,7 @@ jobs:
           DEBIAN_FRONTEND=noninteractive \
           sh ./update.sh ${{ inputs.version_code }} ${{ inputs.version_tag }}
 
-      - name: Deploy Package Source
+      - name: Deploy Makefile file
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
