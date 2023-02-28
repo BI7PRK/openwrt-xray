@@ -10,7 +10,8 @@ on:
 env:
   PACKAGE_NAME: xray-core
   CACHE_DIR: ~/cache
-
+  
+jobs:
   release:
     name: Build for ${{ matrix.arch }}
     runs-on: ubuntu-latest
