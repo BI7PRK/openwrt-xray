@@ -3,11 +3,12 @@ name: Build and Release
 on:
   workflow_dispatch:
     inputs:
-      version_code:
+      version_head:
         required: true
         type: string
 
       version_tag:
+        required: true
         type: string
 
       version_body:
@@ -32,7 +33,7 @@ jobs:
       - name: 'Upadate Makefile' 
         run: |
           DEBIAN_FRONTEND=noninteractive \
-          sh ./update.sh ${{ inputs.version_code }} ${{ inputs.version_tag }}
+          sh ./update.sh ${{ inputs.version_head }} ${{ inputs.version_tag }}
 
       - name: Deploy Makefile file
         uses: peaceiris/actions-gh-pages@v3
@@ -42,8 +43,8 @@ jobs:
           publish_branch: main
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: ${{ inputs.version_code }}
-          
+          commit_message: ${{ inputs.version_tag }}
+
   release:
     name: Build for ${{ matrix.arch }}
     runs-on: ubuntu-latest
@@ -205,7 +206,7 @@ jobs:
       - name: Release and Upload Assets
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ inputs.version_code }}
+          tag_name: ${{ inputs.version_head }}
           body: ${{ github.run_id }}:${{ inputs.version_body }}
           files: '*.ipk'
         env:

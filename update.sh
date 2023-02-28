@@ -1,7 +1,7 @@
 #!/bin/sh
-hash=$1
+head=$1
 
-sed "s/^PKG_SOURCE_VERSION.*/PKG_SOURCE_VERSION:=${hash}/g" Makefile > Makefile1
+sed "s/^PKG_SOURCE_VERSION.*/PKG_SOURCE_VERSION:=${head}/g" Makefile > Makefile1
 mv Makefile1 Makefile
 
 version=$2
