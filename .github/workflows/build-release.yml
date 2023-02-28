@@ -185,7 +185,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ inputs.version_code }}
-          body: ${{ inputs.version_body }}.{{ github.run.id }}
+          body: ${{ github.run.id }}:${{ inputs.version_body }}
           files: '*.ipk'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
