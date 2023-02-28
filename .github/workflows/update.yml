@@ -29,3 +29,13 @@ jobs:
         run: |
           DEBIAN_FRONTEND=noninteractive \
           sh ./update.sh ${{ inputs.version_code }} ${{ inputs.version_tag }}
+
+      - name: Deploy Package Source
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          publish_branch: main
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: ${{ inputs.version_code }}
