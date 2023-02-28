@@ -6,6 +6,10 @@ on:
       version_code:
         required: true
         type: string
+
+      version_tag:
+        type: string
+
       version_body:
         default: 'New Release'
         type: string
@@ -15,9 +19,25 @@ env:
   CACHE_DIR: ~/cache
 
 jobs:
+  update:
+    name: Update new version
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Check Source code version'
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+
+      - name: 'Upadate Makefile' 
+        runs: |
+          DEBIAN_FRONTEND=noninteractive \
+          sh ./update.sh ${{ inputs.version_code }} ${{ inputs.version_tag }}
+
   release:
     name: Build for ${{ matrix.arch }}
     runs-on: ubuntu-latest
+    needs: update
     strategy:
       fail-fast: false
       matrix:
@@ -176,7 +196,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ inputs.version_code }}
-          body: ${{ github.run.id }}:${{ inputs.version_body }}
+          body: ${{ github.run_id }}:${{ inputs.version_body }}
           files: '*.ipk'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

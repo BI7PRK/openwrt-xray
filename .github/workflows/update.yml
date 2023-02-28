@@ -1,0 +1,31 @@
+name: Update
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_code:
+        required: true
+        type: string
+
+      version_tag:
+        type: string
+
+env:
+  PACKAGE_NAME: xray-core
+  CACHE_DIR: ~/cache
+
+jobs:
+  update:
+    name: Update new version
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Check Source code version'
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+
+      - name: 'Upadate Makefile' 
+        runs: |
+          DEBIAN_FRONTEND=noninteractive \
+          sh ./update.sh ${{ inputs.version_code }} ${{ inputs.version_tag }}
