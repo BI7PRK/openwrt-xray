@@ -1,3 +1,3 @@
 # Xray for OpenWrt
 
-From current source code
+Fork [yichya/luci-app-xray](https://github.com/yichya/luci-app-xray)
