@@ -97,9 +97,9 @@ jobs:
 
       - name: Set new version
         run: |
-          sed -i 's/^PKG_SOURCE_VERSION.*/PKG_SOURCE_VERSION:=${{ inputs.version_head }}/g' Makefile
+          sed 's/^PKG_SOURCE_VERSION.*/PKG_SOURCE_VERSION:=${{ inputs.version_head }}/g' Makefile
           test -n "${{ inputs.version_tag }}" && 
-            sed -i 's/^PKG_VERSION.*/PKG_VERSION:=${{ inputs.version_tag }}/g' Makefile
+            sed s's/^PKG_VERSION.*/PKG_VERSION:=${{ inputs.version_tag }}/g' Makefile
           git config user.name github-actions
           git config user.email github-actions@github.com
           git commit -m "update to head `${{ inputs.version_head }}`"
