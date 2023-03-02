@@ -12,6 +12,7 @@ on:
         type: string
 
       version_body:
+        required: true
         default: 'New Release'
         type: string
 
@@ -192,7 +193,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ inputs.version_head }}
-          body: ${{ github.run_id }}:${{ inputs.version_body }}
+          body: ${{ inputs.version_body }}
           files: '*.ipk'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
