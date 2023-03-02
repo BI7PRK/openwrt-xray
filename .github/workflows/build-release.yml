@@ -90,9 +90,12 @@ jobs:
       SDK_NAME: ${{ matrix.sdk_name }}
       CCACHE_DIR: ~/.ccache
       CONFIG_CCACHE: y
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Set new version
         run: |
           sed -i 's/^PKG_SOURCE_VERSION.*/PKG_SOURCE_VERSION:=${{ inputs.version_head }}/g' Makefile
           test -n "${{ inputs.version_tag }}" && 
