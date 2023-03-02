@@ -1,3 +1,3 @@
 # Xray for OpenWrt
 
-From current source code
+Fork [yichya/openwrt-xray](https://github.com/yichya/openwrt-xray)
