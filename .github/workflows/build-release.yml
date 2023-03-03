@@ -95,23 +95,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
 
-      - name: Set new version
+      - name: Update and Commit file
         run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git pull
+
           sed 's/^PKG_SOURCE_VERSION.*/PKG_SOURCE_VERSION:=${{ inputs.version_head }}/g' Makefile > Makefile1
           mv Makefile1 Makefile
           if [ -n "${{ inputs.version_tag }}" ]; then
             sed 's/^PKG_VERSION.*/PKG_VERSION:=${{ inputs.version_tag }}/g' Makefile > Makefile1
             mv Makefile1 Makefile
           fi
-
-      - name: Commit files
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
           git add Makefile
           git commit -m inputs.version_head
 
