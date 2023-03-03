@@ -45,7 +45,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add Makefile
-          git commit -m "update head `${{ inputs.version_head }}`"
+          git commit -m ${{ inputs.version_tag }}
           git push
 
   release:
