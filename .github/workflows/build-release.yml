@@ -100,10 +100,10 @@ jobs:
         run: |
           sed 's/^PKG_SOURCE_VERSION.*/PKG_SOURCE_VERSION:=${{ inputs.version_head }}/g' Makefile
           test -n "${{ inputs.version_tag }}" && 
-            sed s's/^PKG_VERSION.*/PKG_VERSION:=${{ inputs.version_tag }}/g' Makefile
-          git config user.name github-actions
+            sed 's/^PKG_VERSION.*/PKG_VERSION:=${{ inputs.version_tag }}/g' Makefile
+          git config user.name github-actions[bot]
           git config user.email github-actions@github.com
-          git commit -m "update to head `${{ inputs.version_head }}`"
+          git commit -m "update head `${{ inputs.version_head }}`"
           git push
 
       - name: Prepare Cache Key
