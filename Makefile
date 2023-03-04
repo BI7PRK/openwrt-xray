@@ -58,8 +58,9 @@ define Build/Patch
 endef
 
 define Build/Compile
+	cd $(PKG_SOURCE_SUBDIR)
+	sed -i '/build/ s/Custom/$(PKG_SOURCE_VERSION)/' ./core/core.go
 	cd $(PKG_BUILD_DIR)
-	sed -i '/build/ s/Custom/'$(PKG_SOURCE_VERSION)'/' ./core/core.go
 	$(GO_PKG_VARS) $(USE_GOPROXY) CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o $(PKG_INSTALL_DIR)/bin/xray ./main
 endef
 
