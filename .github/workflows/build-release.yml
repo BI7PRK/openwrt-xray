@@ -25,6 +25,12 @@ jobs:
     name: Run Git
     runs-on: ubuntu-latest
     steps:
+      # - name: Get remote repository last commit hash
+      #   run: |
+      #     echo 'repo_last_commit='$(git ls-remote https://github.com/XTLS/Xray-core.git HEAD | cut -c 1-6) >> $GITHUB_ENV
+      #     echo 'repo_last_version='$(git ls-remote -t https://github.com/XTLS/Xray-core.git | tail -1 | cut -d '/' -f 3) >> $GITHUB_ENV
+      #     echo 'last_build='$(grep -n '^PKG_SOURCE_VERSION' Makefile | cut -d '=' -f 2) >> $GITHUB_ENV
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -32,14 +38,10 @@ jobs:
 
       - name: Update file
         run: |
-          echo "OLD_HASH=$(md5sum 'Makefile' | head -n 1)" >> $GITHUB_ENV
-          sed 's/^PKG_SOURCE_VERSION.*/PKG_SOURCE_VERSION:=${{ inputs.version_head }}/g' Makefile > Makefile1
-          mv Makefile1 Makefile
-          if [ -n "${{ inputs.version_tag }}" ]; then
-            sed 's/^PKG_VERSION.*/PKG_VERSION:=${{ inputs.version_tag }}/g' Makefile > Makefile1
-            mv Makefile1 Makefile
-          fi
-          echo "NEW_HASH=$(md5sum 'Makefile' | head -n 1)" >> $GITHUB_ENV
+          echo 'OLD_HASH='$(md5sum 'Makefile' | cut -d ' ' -f 1) >> $GITHUB_ENV
+          sed -i 's/^PKG_SOURCE_VERSION.*/PKG_SOURCE_VERSION:=${{ inputs.version_head }}/g' Makefile
+          sed -i 's/^PKG_VERSION.*/PKG_VERSION:=${{ inputs.version_tag }}/g' Makefile
+          echo 'NEW_HASH='$(md5sum 'Makefile' | cut -d ' ' -f 1) >> $GITHUB_ENV
 
       - name: Commit and push
         if: env.OLD_HASH != env.NEW_HASH
